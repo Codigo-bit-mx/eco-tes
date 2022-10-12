@@ -8,18 +8,19 @@ const LoginPage = () => {
 
     <AuthLayout title={'Ingresar'} >
       
-    <Box sx={{width: 350, padding:'10px 20px'}}> </Box>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}> 
+    <Box sx={{ width: 350, padding:'10px 20px' }}> 
+     
+     <Grid container spacing={2}>  
+        <Grid item xs={12} > 
           <Typography variant='h1'>Iniciar Sesión</Typography>
         </Grid>
 
-        {/* <Grid item xs={12}>
-          <TextField label='Correo' variant='filled' />
+        <Grid item xs={12}>
+          <TextField label='Correo' variant='filled' fullWidth />
         </Grid>
       
         <Grid item xs={12}>
-          <TextField label='password' variant='filled' />
+          <TextField label='password' variant='filled' fullWidth />
         </Grid>
       
         <Grid item xs={12}>
@@ -37,12 +38,12 @@ const LoginPage = () => {
               ¿No tienes cuenta?
             </Link>
           </NextLink>
-        </Grid> */}
+        </Grid>
       
       </Grid>
 
       
-
+      </Box>
     </AuthLayout>
   )
 }

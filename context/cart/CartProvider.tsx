@@ -8,11 +8,20 @@ interface Props {
 }
 
 export interface CartState {
-    cart: ICartProduct[];
+    cart: ICartProduct[]
+    numberofitems:number
+    subtotal: number
+    tax: number
+    total: number
+
 }
 
 const CART_INITIAL_STATE: CartState = {
-   cart: []
+   cart: [],
+   numberofitems: 0,
+   subtotal: 0,
+   tax: 0,
+   total: 0,
 }
 
 export const CartProvider: FC<Props> = ({ children })  => {
@@ -21,15 +30,16 @@ const [state, dispatch] = useReducer( CartReducer, CART_INITIAL_STATE );
 
 useEffect(() => {
   try{
-    const cart = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')! ) : []
-    
+    const cookieProduct = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')! ) : []
+  
     dispatch({
-      type: '[Cart] - Add Product and Update',
-      payload: cart  
+      type: '[Cart] - LoadCart from cookies | storage',
+      payload: cookieProduct
     })
+
   }catch(error){
     dispatch({
-      type: '[Cart] - Add Product and Update',
+      type: '[Cart] - LoadCart from cookies | storage',
       payload: [] 
     })
   }
@@ -42,18 +52,25 @@ useEffect(() => {
   }
 }, [state.cart]);
 
+
 useEffect(() => {
-  const numberOfItem = state.cart.reduce((prev, current) => current.quantity + prev, 0)
-  const subTotal = state.cart.reduce((prev, current) => current.price * current.quantity + prev, 0)
-  const taxRate = Number(process.env.NEXT_PUBLIC_TAXRATE)
+  const numberofitems = state.cart.reduce((prev, current) => current.quantity + prev, 0)
+  const subtotal = state.cart.reduce((prev, current) => current.price * current.quantity + prev, 0)
+  const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE)
+  const tax = subtotal * taxRate
+  const total = subtotal * (taxRate + 1)
 
   const orderSummary = {
-    numberOfItem,
-    subTotal,
-    tax: subTotal * taxRate
+    numberofitems,
+    subtotal,
+    tax,
+    total
   }
 
-  console.log({orderSummary})
+  dispatch({
+    type:'[Cart] - Update order summary',
+    payload: orderSummary
+  })
 
 }, [state.cart])
 
