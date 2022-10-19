@@ -1,5 +1,6 @@
-#Next.js Teslo Shop
+#Next.js 
 
+Ejecutar BD: 
 docker-compose up -d
 
 #Configurar las variables de entorno
