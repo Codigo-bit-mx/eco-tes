@@ -33,8 +33,8 @@ const navigateTo = (url: string) => {
     openMenuSidebar()
 }
 
+
 const salir = () => {
-    console.log("salir")
     logoutUser()
     router.push('/auth/login')
 }
@@ -52,6 +52,7 @@ const salir = () => {
                     <Input
                         autoFocus
                         value={ searchTerm}
+                        
                         onChange={ (e) => setSearchTerm(e.target.value)}
                         onKeyPress= { (e) => e.key === 'Enter' ? redirectSearch() : null} 
                         type='text'
@@ -122,7 +123,9 @@ const salir = () => {
                 ) :
                 
                 (
-                <ListItem button>
+                <ListItem button
+                    onClick={() => navigateTo('/auth/login')}
+                >
                     <ListItemIcon>
                         <VpnKeyOutlined/>
                     </ListItemIcon>
