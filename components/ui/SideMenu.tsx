@@ -13,10 +13,12 @@ import { MaleOutlined,
          SearchOutlined
         } from '@mui/icons-material'
 import {UIContext} from  '../../context/ui'
+import { AuthContext } from '../../context/auth'
 
 export const SideMenu = () => {
 
 const router = useRouter();
+const { isLoogedIn, logoutUser, user } = useContext(AuthContext)
 const { menuOpen, openMenuSidebar } = useContext(UIContext)
 const [ searchTerm, setSearchTerm ] = useState('')
 
@@ -26,10 +28,15 @@ const redirectSearch = () => {
     openMenuSidebar()
 }
 
-
 const navigateTo = (url: string) => {
     router.push(url)
     openMenuSidebar()
+}
+
+const salir = () => {
+    console.log("salir")
+    logoutUser()
+    router.push('/auth/login')
 }
 
   return (
@@ -102,23 +109,33 @@ const navigateTo = (url: string) => {
                     <ListItemText primary={'Niños'} />
                 </ListItem>
 
-
+            { isLoogedIn  ? 
+                (
+                <ListItem button 
+                    onClick={ salir }
+                >
+                    <ListItemIcon>
+                        <LoginOutlined/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Salir'} />
+                </ListItem>
+                ) :
+                
+                (
                 <ListItem button>
                     <ListItemIcon>
                         <VpnKeyOutlined/>
                     </ListItemIcon>
                     <ListItemText primary={'Ingresar'} />
                 </ListItem>
+                ) }
+               
 
-                <ListItem button>
-                    <ListItemIcon>
-                        <LoginOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Salir'} />
-                </ListItem>
-
-                   {/* Admin */}
-                   <Divider />
+               { user?.role === 'admin' && 
+               (
+               <>
+              {/* Admin */}
+                <Divider />
                 <ListSubheader>Admin Panel</ListSubheader>
 
                 <ListItem button>
@@ -140,6 +157,9 @@ const navigateTo = (url: string) => {
                     </ListItemIcon>
                     <ListItemText primary={'Usuarios'} />
                 </ListItem>
+                </>
+               )
+               }
 
             </List>
         </Box>
